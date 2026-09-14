@@ -1,13 +1,20 @@
-/* EVERMOD Chat Widget — embed on any website (WordPress etc.)
-   Usage: <script src="https://toms276.github.io/evermod-chat/widget.js" defer></script>
-   API:   EvermodChat.open()  ·  EvermodChat.close()  ·  EvermodChat.ask('text')  */
+/* EVERMOD Chat Widget v2 — fixed window (no popup), 3 quick-action buttons.
+   Config comes from WordPress via wp_localize_script (EVERMOD_CHAT_CONFIG):
+     meetingLink   — Book a Video Call opens this link in a new tab (fallback: asks Orion)
+     callbackPhone — optional direct-dial number shown in the window
+     callbackText  — predefined message sent to Orion on "Request a Call Back"
+   API: EvermodChat.ask('text') · EvermodChat.greet() · EvermodChat.focus() */
 (function () {
   'use strict';
   if (window.EvermodChat) return;
 
+  var CFG = window.EVERMOD_CHAT_CONFIG || {};
+  var MEETING_LINK = CFG.meetingLink || '';
+  var CALLBACK_PHONE = CFG.callbackPhone || '';
+  var CALLBACK_TEXT = CFG.callbackText || "Hi! I'd prefer a call back \u2014 when would be the best time to reach me?";
+
   var STORE = 'https://superagent-5681298a.base44.app/functions/evermodChatStore';
   var GREETING = 'Hi! I am Orion from EVERMOD \u{1F3E0} \u2014 your AI assistant.\n\nWe have been building modular homes for 23 years with 2000+ projects delivered. Ask me anything about our houses, or tell me what you are looking for!';
-  var MARKER = /\[Website chat id=[A-Za-z0-9]{20,32}\]/g;
 
   var sessionId = null;
   try {
@@ -18,16 +25,16 @@
   /* ---------- styles ---------- */
   var css = document.createElement('style');
   css.textContent = [
-    '#evm-btn{position:fixed;right:24px;bottom:24px;z-index:2147483000;width:60px;height:60px;border-radius:50%;background:#1a1a1a;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .2s ease}#evm-btn:hover{transform:translateY(-2px)}',
-    '#evm-btn svg{width:26px;height:26px;fill:#fff}',
-    '#evm-panel{position:fixed;right:24px;bottom:96px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 128px);background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.28);display:none;flex-direction:column;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif}',
-    '#evm-panel.evm-open{display:flex}',
+    '#evm-panel{position:fixed;right:24px;bottom:24px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:540px;max-height:calc(100vh - 48px);background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif}',
     '#evm-head{background:#1a1a1a;color:#fff;padding:13px 15px;display:flex;align-items:center;gap:10px}',
     '#evm-head .t{font-size:15px;font-weight:700;letter-spacing:.02em}',
     '#evm-head .s{font-size:11px;font-weight:300;opacity:.8;margin-top:2px}',
     '#evm-head .dot{width:8px;height:8px;border-radius:50%;background:#4caf50;flex:none}',
-    '#evm-head .wa{margin-left:auto;width:30px;height:30px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;flex:none}',
-    '#evm-head .wa svg{width:16px;height:16px;fill:#fff}',
+    '#evm-acts{display:flex;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid #eee;flex-wrap:wrap}',
+    '.evm-act{flex:1;min-width:100px;border:1px solid #1a1a1a;background:#fff;color:#1a1a1a;border-radius:20px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s ease;white-space:nowrap;text-align:center}',
+    '.evm-act:hover{background:#1a1a1a;color:#fff}',
+    '.evm-act.primary{background:#1a1a1a;color:#fff}',
+    '.evm-act.primary:hover{background:#333}',
     '#evm-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#fafafa}',
     '.evm-msg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:14px;line-height:1.45;white-space:pre-wrap;overflow-wrap:break-word}',
     '.evm-msg.ai{background:#fff;border:1px solid #e4e4e4;color:#1a1a1a;border-bottom-left-radius:4px;align-self:flex-start}',
@@ -41,81 +48,122 @@
     '#evm-inrow button:disabled{opacity:.4;cursor:default}',
     '#evm-inrow button svg{width:20px;height:20px;fill:#1a1a1a}',
     '#evm-foot{font-size:10px;font-weight:300;text-align:center;color:#aaa;padding:6px;background:#fff}',
+    '#evm-foot a{color:#888;text-decoration:none;font-weight:400}',
     '@keyframes evm-blink{0%,100%{opacity:.2}50%{opacity:1}}',
-    '@media (max-width:480px){#evm-panel{right:8px;left:8px;width:auto;bottom:88px}}'
+    '@media (max-width:480px){#evm-panel{right:8px;left:8px;width:auto;bottom:8px;height:70vh}}'
   ].join('');
   document.head.appendChild(css);
 
   /* ---------- markup ---------- */
-  var btn = document.createElement('button');
-  btn.id = 'evm-btn';
-  btn.setAttribute('aria-label', 'Chat with us');
-  btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg>';
-
   var panel = document.createElement('div');
   panel.id = 'evm-panel';
   panel.setAttribute('role', 'dialog');
   panel.setAttribute('aria-label', 'EVERMOD chat');
   panel.innerHTML =
-    '<div id="evm-head"><span class="dot"></span><div><div class="t">EVERMOD</div><div class="s">Orion \u00b7 online</div></div>' +
-    '<a class="wa" href="https://wa.me/37127034348" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.7 6L4 29l8.2-1.7c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg></a></div>' +
+    '<div id="evm-head"><span class="dot"></span><div><div class="t">EVERMOD</div><div class="s">Orion \u00b7 online now</div></div></div>' +
+    '<div id="evm-acts">' +
+      '<button class="evm-act primary" id="evm-a-chat">Chat with Orion</button>' +
+      '<button class="evm-act" id="evm-a-video">Book a Video Call</button>' +
+      '<button class="evm-act" id="evm-a-call">Request a Call Back</button>' +
+    '</div>' +
     '<div id="evm-msgs"></div>' +
-    '<div id="evm-inrow"><input id="evm-input" type="text" placeholder="Write your question...">' +
-    '<button id="evm-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button></div>' +
-    '<div id="evm-foot">EVERMOD \u00b7 MODULAR HOMES \u00b7 23 YEARS \u00b7 2000+ PROJECTS</div>';
+    '<div id="evm-inrow">' +
+      '<input id="evm-input" type="text" placeholder="Write your question..." aria-label="Your question">' +
+      '<button id="evm-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>' +
+    '</div>' +
+    '<div id="evm-foot">powered by EVERMOD assistant' + (CALLBACK_PHONE ? ' \u00b7 <a href="tel:' + CALLBACK_PHONE.replace(/\s+/g, '') + '">' + CALLBACK_PHONE + '</a>' : '') + '</div>';
+  document.body.appendChild(panel);
 
-  function mount() { document.body.appendChild(btn); document.body.appendChild(panel); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
+  var msgs = panel.querySelector('#evm-msgs');
+  var input = panel.querySelector('#evm-input');
+  var sendBtn = panel.querySelector('#evm-send');
+  var polling = false;
+  var greeted = false;
 
-  var box, input, sendBtn, busy = false, greeted = false;
-  function refs() { box = panel.querySelector('#evm-msgs'); input = panel.querySelector('#evm-input'); sendBtn = panel.querySelector('#evm-send'); }
-  refs();
-
-  function el(tag, cls, text) { var d = document.createElement(tag); if (cls) d.className = cls; if (text !== undefined) d.textContent = text; return d; }
-  function scroll() { box.scrollTop = box.scrollHeight; }
-  function addMsg(text, who) { box.appendChild(el('div', 'evm-msg ' + who, text)); scroll(); }
-  function addTyping() { var t = el('div', 'evm-typing'); t.innerHTML = '<span></span><span></span><span></span>'; box.appendChild(t); scroll(); return t; }
-
-  function greet() {
-    if (greeted) return; greeted = true;
-    addMsg(GREETING, 'ai');
+  /* ---------- helpers ---------- */
+  function scroll() { msgs.scrollTop = msgs.scrollHeight; }
+  function addMsg(text, who) {
+    var d = document.createElement('div');
+    d.className = 'evm-msg ' + who;
+    d.textContent = text;
+    msgs.appendChild(d);
+    scroll();
+    return d;
+  }
+  function typing(on) {
+    var t = panel.querySelector('.evm-typing');
+    if (on && !t) {
+      t = document.createElement('div');
+      t.className = 'evm-typing';
+      t.innerHTML = '<span></span><span></span><span></span>';
+      msgs.appendChild(t);
+      scroll();
+    } else if (!on && t) { t.remove(); }
   }
 
-  function open() { refs(); panel.classList.add('evm-open'); btn.style.display = 'none'; greet(); setTimeout(function () { input.focus(); }, 50); }
-  function close() { panel.classList.remove('evm-open'); btn.style.display = 'flex'; }
-  function toggle() { panel.classList.contains('evm-open') ? close() : open(); }
-  btn.addEventListener('click', toggle);
+  function enqueue(question) {
+    typing(true);
+    sendBtn.disabled = true;
+    fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'enqueue', sessionId: sessionId, question: question }) })
+      .then(function () { poll(); })
+      .catch(function () {
+        typing(false);
+        sendBtn.disabled = false;
+        addMsg('Sorry, the connection dropped \u2014 please try again in a moment.', 'ai');
+      });
+  }
 
-  function poll(t) {
-    fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'poll', sessionId: sessionId }) })
+  function poll() {
+    if (polling) return;
+    polling = true;
+    fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'poll', sessionId: sessionId }) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (d && d.status === 'answered' && d.reply) { t.remove(); addMsg(String(d.reply).replace(MARKER, '').trim(), 'ai'); busy = false; sendBtn.disabled = false; }
-        else setTimeout(function () { poll(t); }, 4000);
+        polling = false;
+        if (d && d.reply) {
+          typing(false);
+          sendBtn.disabled = false;
+          addMsg(d.reply, 'ai');
+        } else {
+          setTimeout(function () { if (typing(panel.querySelector('.evm-typing'))) poll(); }, 4000);
+        }
       })
-      .catch(function () { setTimeout(function () { poll(t); }, 8000); });
+      .catch(function () { polling = false; setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 5000); });
   }
 
   function send(text) {
-    if (busy || !text) return;
-    busy = true; sendBtn.disabled = true;
-    refs();
+    text = (text || '').trim();
+    if (!text) return;
     addMsg(text, 'user');
-    var t = addTyping();
-    fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'enqueue', sessionId: sessionId, question: text }) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) { if (d && d.ok) poll(t); else { t.remove(); addMsg('Sorry, the assistant is unavailable right now. Please try again in a moment.', 'ai'); busy = false; sendBtn.disabled = false; } })
-      .catch(function () { t.remove(); addMsg('Connection problem. Please try again in a moment.', 'ai'); busy = false; sendBtn.disabled = false; });
+    input.value = '';
+    enqueue(text);
   }
 
-  sendBtn.addEventListener('click', function () { var v = input.value.trim(); input.value = ''; send(v); });
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var v = input.value.trim(); input.value = ''; send(v); } });
+  /* ---------- public API ---------- */
+  window.EvermodChat = {
+    ask: function (text) { send(text); },
+    greet: function () {
+      if (!greeted && !msgs.children.length) { addMsg(GREETING, 'ai'); greeted = true; }
+      if (window.innerWidth > 480) input.focus();
+      scroll();
+    },
+    focus: function () { input.focus(); },
+    open: function () { window.EvermodChat.greet(); }
+  };
 
-  /* auto-open support for landing pages: ?evm_open=1 or #chat */
-  try {
-    var u = new URL(location.href);
-    if (u.searchParams.get('evm_open') === '1' || u.hash === '#chat') setTimeout(open, 400);
-  } catch (e) {}
+  /* ---------- events ---------- */
+  sendBtn.addEventListener('click', function () { send(input.value); });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(input.value); });
 
-  window.EvermodChat = { open: open, close: close, toggle: toggle, ask: function (text) { open(); send(text); } };
+  panel.querySelector('#evm-a-chat').addEventListener('click', function () { window.EvermodChat.greet(); });
+  panel.querySelector('#evm-a-video').addEventListener('click', function () {
+    if (MEETING_LINK) { window.open(MEETING_LINK, '_blank'); }
+    else { send('I would like to book a video call with a specialist'); }
+  });
+  panel.querySelector('#evm-a-call').addEventListener('click', function () { send(CALLBACK_TEXT); });
+
+  /* ---------- init: show greeting instantly (fixed window is always visible) ---------- */
+  window.EvermodChat.greet();
 })();
