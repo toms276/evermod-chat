@@ -82,6 +82,7 @@
   var sendBtn = panel.querySelector('#evm-send');
   var polling = false;
   var greeted = false;
+  var lastShownId = null;
 
   /* ---------- helpers ---------- */
   function scroll() { msgs.scrollTop = msgs.scrollHeight; }
@@ -125,12 +126,18 @@
       .then(function (r) { return r.json(); })
       .then(function (d) {
         polling = false;
-        if (d && d.reply) {
+        if (d && d.reply && d.recordId && d.recordId !== lastShownId) {
+          lastShownId = d.recordId;
+          try { localStorage.setItem('evm-last-shown', lastShownId); } catch (e) {}
           typing(false);
           sendBtn.disabled = false;
           addMsg(d.reply, 'ai');
+          poll(); // check for more answered records behind this one
+        } else if (d && d.status === 'answered') {
+          typing(false);
+          sendBtn.disabled = false;
         } else {
-          setTimeout(function () { if (typing(panel.querySelector('.evm-typing'))) poll(); }, 4000);
+          setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 4000);
         }
       })
       .catch(function () { polling = false; setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 5000); });
@@ -169,4 +176,24 @@
 
   /* ---------- init: show greeting instantly (fixed window is always visible) ---------- */
   window.EvermodChat.greet();
+
+  // catch-up: if the visitor reloaded while an answer was on its way, deliver it now
+  try { lastShownId = localStorage.getItem('evm-last-shown') || null; } catch (e) { lastShownId = null; }
+  fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'poll', sessionId: sessionId }) })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && d.reply && d.recordId && d.recordId !== lastShownId) {
+        lastShownId = d.recordId;
+        try { localStorage.setItem('evm-last-shown', lastShownId); } catch (e) {}
+        addMsg(d.reply, 'ai');
+        poll();
+      } else if (d && d.status && d.status !== 'answered' && d.recordId && d.recordId !== lastShownId) {
+        // question still being answered — resume waiting where we left off
+        typing(true);
+        sendBtn.disabled = true;
+        setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 4000);
+      }
+    })
+    .catch(function () {});
 })();
