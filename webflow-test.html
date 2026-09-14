@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVERMOD — Webflow embed test</title>
+<style>
+  body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#f5f4f2; color:#1a1a1a; }
+  .wrap { max-width:900px; margin:0 auto; padding:40px 24px 80px; }
+  h1 { font-size:30px; font-weight:700; margin:0 0 8px; }
+  p.sub { font-weight:300; color:#777; margin:0 0 30px; }
+</style>
+</head><body>
+<div class="wrap">
+  <h1>Webflow embed test</h1>
+  <p class="sub">This page contains ONLY the embed snippet below — exactly what you paste into a Webflow HTML Embed element. The chat section renders inside it.</p>
+
+  <!-- ====== EVERMOD CHAT EMBED — paste this into a Webflow HTML Embed ====== -->
+  <div id="evermod-chat"></div>
+  <script>
+    window.EVERMOD_CHAT_CONFIG = {
+      meetingLink: 'https://meetings-eu1.hubspot.com/normunds-broks/schedule-google-meets-call-with-normunds-evermod',
+      callbackPhone: '+371 27034348',
+      callbackText: "Hi! I'd prefer a call back — when would be the best time to reach me?"
+    };
+  </script>
+  <script src="https://toms276.github.io/evermod-chat/widget.js?v=3" defer></script>
+  <!-- ====== END EVERMOD CHAT EMBED ====== -->
+
+</div>
+</body></html>
