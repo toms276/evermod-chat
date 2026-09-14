@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVERMOD Chat v2 — WP test</title>
+<style>body{margin:0;font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f4f2;color:#1a1a1a}</style>
+</head><body>
+
+<!-- ==== simulated [evermod_thankyou] shortcode output ==== -->
+<style>
+.evm-ty{background:#141414;color:#fff;padding:70px 24px;text-align:center}
+.evm-ty h1{font-size:42px;font-weight:700;letter-spacing:.03em;margin:0 0 10px}
+.evm-ty .sub{font-weight:300;opacity:.75;margin:0}
+.evm-next{max-width:900px;margin:50px auto;padding:0 24px}
+.evm-next h2{font-size:26px;font-weight:700;color:#1a1a1a}
+.evm-grid{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px}
+.evm-card{flex:1;min-width:260px;background:#fff;border:1px solid #e6e4e0;border-radius:12px;padding:28px;text-align:left}
+.evm-card .num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1a1a1a;color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-bottom:14px}
+.evm-card h3{font-weight:700;font-size:17px;margin:0 0 8px;color:#1a1a1a}
+.evm-card p{line-height:1.6;color:#555;margin:0 0 18px}
+.evm-card .lnk{background:none;border:none;cursor:pointer;font-size:14px;font-weight:700;color:#1a1a1a;padding:0;display:inline-flex;align-items:center;gap:6px}
+.evm-card .lnk:hover{opacity:.7}
+</style>
+<div class="evm-ty"><h1>THANK YOU!</h1><p class="sub">YOUR INQUIRY HAS BEEN RECEIVED</p></div>
+<div class="evm-next"><h2>What's next?</h2><div class="evm-grid">
+<div class="evm-card"><span class="num">1</span><h3>Get an Immediate Answer</h3>
+<p>Chat with Orion, our AI assistant, right here — instant answers about models, floor plans, delivery and warranties.</p>
+<button class="lnk" onclick="EvermodChat.greet()">Chat with Orion →</button></div>
+<div class="evm-card"><span class="num">2</span><h3>Book a Video Call</h3>
+<p>Walk through the designs together with our specialist. Pick a time that suits you.</p>
+<button class="lnk" onclick="window.open('https://app.hubspot.com/meetings/evermod','_blank')">Book a video call →</button></div>
+<div class="evm-card"><span class="num">3</span><h3>Request a Call Back</h3>
+<p>Leave the details in the chat and our specialist will call you back at a time that suits you.</p>
+<button class="lnk" onclick="EvermodChat.ask(&quot;Hi! I'd prefer a call back — when would be the best time to reach me?&quot;)">Request a call back →</button>
+<p style="margin:8px 0 0;font-size:13px;color:#888">Or call us directly: <a href="tel:+37127034348" style="color:#1a1a1a">+371 27034348</a></p></div>
+</div></div>
+
+<!-- ==== simulated WP rest of page ==== -->
+<div style="max-width:900px;margin:60px auto;padding:0 24px">
+<h2 style="font-size:26px;font-weight:700">Why EVERMOD?</h2>
+<p style="line-height:1.7;color:#555">This is the rest of the WordPress page content below the widget blocks — the chat window floats independently and does not touch this part.</p>
+</div>
+
+<script>
+window.EVERMOD_CHAT_CONFIG = {
+  meetingLink: 'https://app.hubspot.com/meetings/evermod',
+  callbackPhone: '+371 27034348',
+  callbackText: "Hi! I'd prefer a call back — when would be the best time to reach me?"
+};
+</script>
+<script src="widget-v2.js"></script>
+</body></html>
