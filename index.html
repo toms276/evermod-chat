@@ -6,7 +6,7 @@ body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; backgro
 .hero { background:#141414; color:#fff; padding:70px 40px; text-align:center; }
 .hero h1 { font-size:42px; font-weight:700; letter-spacing:.04em; margin:0 0 10px; }
 .hero p { font-weight:300; opacity:.75; margin:0; letter-spacing:.05em; }
-.section { max-width:900px; margin:50px auto; padding:0 24px; }
+.section { max-width:900px; margin:50px auto 0; padding:0 24px; }
 .section h2 { font-size:26px; font-weight:700; margin:0; }
 .section .sub { font-weight:300; color:#777; margin:6px 0 0; }
 .cards { display:flex; gap:16px; flex-wrap:wrap; margin-top:22px; }
@@ -19,7 +19,10 @@ body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; backgro
 .card .go svg { width:15px; height:15px; fill:#141414; }
 .card .phone { display:block; margin-top:10px; font-size:13px; color:#888; font-weight:300; }
 .card .phone a { color:#1a1a1a; text-decoration:none; font-weight:400; }
-.footer { text-align:center; font-weight:300; color:#999; font-size:12px; padding:0 20px 60px; }
+.chatsec { max-width:900px; margin:44px auto 0; padding:0 24px; }
+.chatsec h2 { font-size:26px; font-weight:700; margin:0; }
+.chatsec .sub { font-weight:300; color:#777; margin:6px 0 18px; }
+.footer { text-align:center; font-weight:300; color:#999; font-size:12px; padding:34px 20px 60px; }
 </style>
 </head><body>
 
@@ -30,9 +33,9 @@ body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; backgro
 
 <div class="section">
   <h2>What's next?</h2>
-  <p class="sub">Choose how you'd like to continue — the chat window is already open on the right.</p>
+  <p class="sub">Choose how you'd like to continue — or just scroll down and write to Orion in the chat below.</p>
   <div class="cards">
-    <button class="card" onclick="EvermodChat.greet()">
+    <button class="card" onclick="EvermodChat.scrollTo()">
       <span class="num">1</span>
       <h3>Get an Immediate Answer</h3>
       <p>Chat with Orion, our AI assistant, right here — instant answers about models, floor plans, delivery and warranties.</p>
@@ -60,6 +63,12 @@ body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; backgro
   </div>
 </div>
 
+<div class="chatsec">
+  <h2>Ask Orion</h2>
+  <p class="sub">Our AI assistant is right here — no buttons, no popups. Just write your question.</p>
+  <div id="evermod-chat"></div>
+</div>
+
 <p class="footer">EVERMOD · MODULAR HOMES · 23 YEARS · 2000+ PROJECTS</p>
 
 <script>
@@ -73,7 +82,7 @@ window.EVERMOD_CHAT_CONFIG = {
 <script>
 document.getElementById('evm-card-video').addEventListener('click', function () {
   if (window.EVERMOD_CHAT_CONFIG.meetingLink) { window.open(window.EVERMOD_CHAT_CONFIG.meetingLink, '_blank'); }
-  else { EvermodChat.ask('I would like to book a video call with a specialist'); }
+  else { EvermodChat.scrollTo(); EvermodChat.ask('I would like to book a video call with a specialist'); }
 });
 </script>
 </body></html>
