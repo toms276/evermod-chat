@@ -1,62 +1,27 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EVERMOD — Thank You</title>
 <style>
-  @font-face { font-family:'Gotham'; src:url('https://media.base44.com/files/public/6a3d3976755622175681298a/b9c8d8ddc_gotham-light.woff2') format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
-  @font-face { font-family:'Gotham'; src:url('https://media.base44.com/files/public/6a3d3976755622175681298a/924b32a12_gotham-medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
-  @font-face { font-family:'Gotham'; src:url('https://media.base44.com/files/public/6a3d3976755622175681298a/59226d1e5_gotham-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
-  body { margin:0; font-family:'Gotham',-apple-system,Segoe UI,Roboto,sans-serif; background:#f5f4f2; color:#1a1a1a; }
-  .hero { background:#141414; color:#fff; padding:64px 40px; text-align:center; }
-  .hero h1 { font-size:42px; font-weight:700; letter-spacing:.03em; margin:0 0 10px; }
-  .hero p { font-weight:300; opacity:.75; margin:0; letter-spacing:.05em; }
-  .section { max-width:760px; margin:44px auto 60px; padding:0 24px; }
-  .section h2 { font-size:26px; font-weight:700; margin:0 0 6px; }
-  .section .sub { font-weight:300; color:#666; margin:0 0 18px; }
-  .cards { display:flex; gap:16px; flex-wrap:wrap; }
-  .card { flex:1; min-width:260px; background:#fff; border:1px solid #e6e4e0; border-radius:12px; padding:24px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; text-align:left; font-family:inherit; }
-  .card:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.08); }
-  .card .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:#141414; color:#fff; font-weight:700; font-size:14px; margin-bottom:12px; }
-  .card h3 { font-weight:700; font-size:17px; margin:0 0 8px; }
-  .card p { font-weight:300; line-height:1.55; color:#555; margin:0 0 14px; font-size:14px; }
-  .card .go { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:#141414; }
-  .card .go svg { width:15px; height:15px; fill:#141414; }
-
-  #evm-btn { position:fixed; right:22px; bottom:22px; z-index:9998; width:62px; height:62px; border-radius:50%; background:#141414; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.25); transition:transform .2s ease; }
-  #evm-btn:hover { transform:translateY(-2px); }
-  #evm-btn svg { width:27px; height:27px; fill:#fff; }
-  #evm-btn .badge { position:absolute; top:-2px; right:-2px; width:16px; height:16px; border-radius:50%; background:#25d366; border:2px solid #f5f4f2; }
-  #evm-panel { position:fixed; right:22px; bottom:94px; z-index:9999; width:370px; max-width:calc(100vw - 28px); height:min(560px, calc(100vh - 130px)); background:#111; color:#fff; border-radius:16px; box-shadow:0 16px 48px rgba(0,0,0,.3); display:none; flex-direction:column; overflow:hidden; }
-  #evm-panel.open { display:flex; }
-  .evm-header { background:#1a1a1a; border-bottom:1px solid #2a2a2a; padding:13px 16px; display:flex; align-items:center; gap:11px; flex-shrink:0; }
-  .evm-header .logo { font-weight:700; letter-spacing:.12em; font-size:14px; }
-  .evm-header .status { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:11px; font-weight:300; color:#9a9a9a; }
-  .evm-header .dot { width:8px; height:8px; border-radius:50%; background:#4caf50; box-shadow:0 0 6px rgba(76,175,80,.8); }
-  .evm-header .wa { display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:#25d366; margin-left:10px; text-decoration:none; flex-shrink:0; }
-  .evm-header .wa svg { width:18px; height:18px; fill:#fff; }
-  #evm-messages { flex:1; overflow-y:auto; padding:16px 14px; display:flex; flex-direction:column; gap:11px; }
-  .evm-msg { max-width:84%; padding:11px 14px; border-radius:15px; font-size:14px; line-height:1.5; white-space:pre-wrap; overflow-wrap:break-word; }
-  .evm-msg.ai { background:#1e1e1e; border:1px solid #2c2c2c; color:#f2f2f2; border-bottom-left-radius:5px; align-self:flex-start; }
-  .evm-msg.user { background:#25d366; color:#06240f; font-weight:500; border-bottom-right-radius:5px; align-self:flex-end; }
-  .evm-typing { align-self:flex-start; background:#1e1e1e; border:1px solid #2c2c2c; border-radius:15px; border-bottom-left-radius:5px; padding:13px 16px; display:flex; gap:5px; }
-  .evm-typing span { width:7px; height:7px; border-radius:50%; background:#777; animation:evm-blink 1.2s infinite; }
-  .evm-typing span:nth-child(2) { animation-delay:.2s; }
-  .evm-typing span:nth-child(3) { animation-delay:.4s; }
-  @keyframes evm-blink { 0%,100%{opacity:.25} 50%{opacity:1} }
-  .evm-cta { align-self:flex-start; display:inline-flex; align-items:center; gap:8px; background:#25d366; color:#06240f; text-decoration:none; font-size:13px; font-weight:700; padding:10px 17px; border-radius:24px; transition:transform .15s ease; }
-  .evm-cta:hover { transform:translateY(-1px); }
-  .evm-cta svg { width:16px; height:16px; fill:#06240f; }
-  .evm-footer { flex-shrink:0; background:#1a1a1a; border-top:1px solid #2a2a2a; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); }
-  .evm-row { display:flex; gap:9px; align-items:center; }
-  #evm-input { flex:1; background:#262626; border:1px solid #333; color:#fff; border-radius:22px; padding:12px 16px; font-family:'Gotham',sans-serif; font-size:16px; outline:none; }
-  #evm-input:focus { border-color:#4caf50; }
-  #evm-input:disabled { opacity:.55; }
-  #evm-send { width:42px; height:42px; border-radius:50%; border:none; cursor:pointer; background:#25d366; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .15s ease; }
-  #evm-send:hover { transform:translateY(-1px); }
-  #evm-send:disabled { background:#3a3a3a; cursor:default; transform:none; }
-  #evm-send svg { width:18px; height:18px; fill:#06240f; }
-  .evm-brand { text-align:center; font-size:9.5px; font-weight:300; color:#555; padding-top:8px; letter-spacing:.06em; }
-  .hero-sm { text-align:center; font-weight:300; color:#888; font-size:12px; padding:0 20px 40px; }
-</style></head><body>
+body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#f5f4f2; color:#1a1a1a; }
+.hero { background:#141414; color:#fff; padding:70px 40px; text-align:center; }
+.hero h1 { font-size:42px; font-weight:700; letter-spacing:.04em; margin:0 0 10px; }
+.hero p { font-weight:300; opacity:.75; margin:0; letter-spacing:.05em; }
+.section { max-width:900px; margin:50px auto; padding:0 24px; }
+.section h2 { font-size:26px; font-weight:700; margin:0; }
+.section .sub { font-weight:300; color:#777; margin:6px 0 0; }
+.cards { display:flex; gap:16px; flex-wrap:wrap; margin-top:22px; }
+.card { flex:1; min-width:260px; background:#fff; border:1px solid #e6e4e0; border-radius:12px; padding:26px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; text-align:left; font-family:inherit; }
+.card:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.08); }
+.card .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:#141414; color:#fff; font-weight:700; font-size:14px; margin-bottom:12px; }
+.card h3 { font-weight:700; font-size:17px; margin:0 0 8px; }
+.card p { font-weight:300; line-height:1.55; color:#555; margin:0 0 14px; font-size:14px; }
+.card .go { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:#141414; }
+.card .go svg { width:15px; height:15px; fill:#141414; }
+.card .phone { display:block; margin-top:10px; font-size:13px; color:#888; font-weight:300; }
+.card .phone a { color:#1a1a1a; text-decoration:none; font-weight:400; }
+.footer { text-align:center; font-weight:300; color:#999; font-size:12px; padding:0 20px 60px; }
+</style>
+</head><body>
 
 <div class="hero">
   <h1>THANK YOU!</h1>
@@ -65,9 +30,9 @@
 
 <div class="section">
   <h2>What's next?</h2>
-  <p class="sub">Choose how you'd like to continue — both options are right here.</p>
+  <p class="sub">Choose how you'd like to continue — the chat window is already open on the right.</p>
   <div class="cards">
-    <button class="card" id="evm-card-chat">
+    <button class="card" onclick="EvermodChat.greet()">
       <span class="num">1</span>
       <h3>Get an Immediate Answer</h3>
       <p>Chat with Orion, our AI assistant, right here — instant answers about models, floor plans, delivery and warranties.</p>
@@ -75,136 +40,40 @@
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
       </span>
     </button>
-    <button class="card" id="evm-card-call">
+    <button class="card" id="evm-card-video">
       <span class="num">2</span>
       <h3>Book a Video Call</h3>
-      <p>Walk through the designs together with a specialist. Orion will ask a few quick questions and arrange the call for you.</p>
-      <span class="go">Request a call
+      <p>Walk through the designs together with a specialist. Pick a time that suits you.</p>
+      <span class="go">Book a video call
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
       </span>
+    </button>
+    <button class="card" onclick="EvermodChat.ask(EVERMOD_CHAT_CONFIG.callbackText)">
+      <span class="num">3</span>
+      <h3>Request a Call Back</h3>
+      <p>Leave the details in the chat and our specialist will call you back at a time that suits you.</p>
+      <span class="go">Request a call back
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </span>
+      <span class="phone">Or call us directly: <a href="tel:+37127034348">+371 27034348</a></span>
     </button>
   </div>
 </div>
 
-<button id="evm-btn" aria-label="Chat with us">
-  <svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7zm0-4h10v2H7z"/></svg>
-  <span class="badge"></span>
-</button>
-
-<div id="evm-panel" role="dialog" aria-label="EVERMOD chat">
-  <div class="evm-header">
-    <span class="logo">EVERMOD</span>
-    <span class="status"><span class="dot"></span> Orion &middot; online</span>
-    <a class="wa" href="https://wa.me/37127034348" target="_blank" rel="noopener" aria-label="WhatsApp">
-      <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.7 6L4 29l8.2-1.7c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg>
-    </a>
-  </div>
-  <div id="evm-messages"></div>
-  <div class="evm-footer">
-    <div class="evm-row">
-      <input id="evm-input" type="text" placeholder="Write your question..." autocomplete="off">
-      <button id="evm-send" aria-label="Send">
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-      </button>
-    </div>
-    <div class="evm-brand">EVERMOD &middot; MODULAR HOMES &middot; 23 YEARS &middot; 2000+ PROJECTS</div>
-  </div>
-</div>
+<p class="footer">EVERMOD · MODULAR HOMES · 23 YEARS · 2000+ PROJECTS</p>
 
 <script>
-(function () {
-  var EVM_WHATSAPP = 'https://wa.me/37127034348';
-  var GREETING = 'Hi! I am Orion from EVERMOD \u{1F3E0} \u2014 your AI assistant.\n\nWe have been building modular homes for 23 years with 2000+ projects delivered. Ask me anything about our houses, or tell me what you are looking for!';
-  var STORE = 'https://superagent-5681298a.base44.app/functions/evermodChatStore';
-  var MARKER = /\[Website chat id=[A-Za-z0-9]{20,32}\]/g;
-  var busy = false;
-  var opened = false;
-
-  var sessionId = null;
-  try {
-    sessionId = localStorage.getItem('evm-session');
-    if (!sessionId) { sessionId = 'web-' + Math.random().toString(36).slice(2, 10); localStorage.setItem('evm-session', sessionId); }
-  } catch (e) { sessionId = 'web-' + Date.now(); }
-
-  var panel = document.getElementById('evm-panel');
-  var box = document.getElementById('evm-messages');
-  var input = document.getElementById('evm-input');
-  var sendBtn = document.getElementById('evm-send');
-  var btn = document.getElementById('evm-btn');
-  var cardChat = document.getElementById('evm-card-chat');
-  var cardCall = document.getElementById('evm-card-call');
-
-  function el(tag, cls, text) { var d = document.createElement(tag); if (cls) d.className = cls; if (text !== undefined) d.textContent = text; return d; }
-  function scroll() { box.scrollTop = box.scrollHeight; }
-  function addMsg(text, who) { box.appendChild(el('div', 'evm-msg ' + who, text)); scroll(); }
-  function addTyping() { var t = el('div', 'evm-typing'); t.innerHTML = '<span></span><span></span><span></span>'; box.appendChild(t); scroll(); return t; }
-
-  function greet() {
-    if (opened) return;
-    opened = true;
-    addMsg(GREETING, 'ai');
-  }
-
-  function toggle() {
-    panel.classList.toggle('open');
-    if (panel.classList.contains('open')) greet();
-  }
-  function openChat(prefill) {
-    panel.classList.add('open');
-    greet();
-    if (prefill) { input.value = prefill; }
-    setTimeout(function () { input.focus(); }, 80);
-  }
-
-  btn.addEventListener('click', toggle);
-  cardChat.addEventListener('click', function () { openChat(); });
-  cardCall.addEventListener('click', function () { openChat('I would like to book a video call with a specialist'); });
-
-  function setBusy(b) { busy = b; input.disabled = b; sendBtn.disabled = b; }
-
-  function send() {
-    var text = input.value.trim();
-    if (!text || busy) return;
-    input.value = '';
-    addMsg(text, 'user');
-    setBusy(true);
-    var typing = addTyping();
-    var pollCount = 0;
-    var done = false;
-    var timer = null;
-
-    function finish(msg) {
-      done = true; clearInterval(timer);
-      if (typing.parentNode) box.removeChild(typing);
-      setBusy(false);
-      if (msg) addMsg(msg, 'ai');
-      input.focus();
-    }
-
-    function poll() {
-      pollCount++;
-      if (pollCount > 120) { finish('Sorry, this is taking longer than usual \u2014 please continue on WhatsApp (button below) and we will pick it up there.'); return; }
-      fetch(STORE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'poll', sessionId: sessionId }) })
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (done) return;
-          if (d && d.status === 'answered' && d.reply) {
-            finish(String(d.reply).replace(MARKER, '').trim());
-          }
-        }).catch(function () {});
-    }
-
-    fetch(STORE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'enqueue', sessionId: sessionId, question: text }) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (d && d.ok) { timer = setInterval(poll, 2500); poll(); }
-        else { throw new Error('enqueue failed'); }
-      })
-      .catch(function () { finish('Connection hiccup \u2014 please write to us on WhatsApp (button below) or info@evermod.eu'); });
-  }
-
-  sendBtn.addEventListener('click', send);
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
-})();
+window.EVERMOD_CHAT_CONFIG = {
+  meetingLink: '',
+  callbackPhone: '+371 27034348',
+  callbackText: "Hi! I'd prefer a call back — when would be the best time to reach me?"
+};
+</script>
+<script src="widget.js" defer></script>
+<script>
+document.getElementById('evm-card-video').addEventListener('click', function () {
+  if (window.EVERMOD_CHAT_CONFIG.meetingLink) { window.open(window.EVERMOD_CHAT_CONFIG.meetingLink, '_blank'); }
+  else { EvermodChat.ask('I would like to book a video call with a specialist'); }
+});
 </script>
 </body></html>
