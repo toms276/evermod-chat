@@ -9,9 +9,10 @@
   if (window.EvermodChat) return;
 
   var CFG = window.EVERMOD_CHAT_CONFIG || {};
-  var MEETING_LINK = CFG.meetingLink || '';
+  var MEETING_LINK = CFG.meetingLink || 'https://meetings-eu1.hubspot.com/normunds-broks/schedule-google-meets-call-with-normunds-evermod';
   var CALLBACK_PHONE = CFG.callbackPhone || '';
-  var CALLBACK_TEXT = CFG.callbackText || "Hi! I'd prefer a call back \u2014 when would be the best time to reach me?";
+  var CALLBACK_TEXT = CFG.callbackText || 'Please call me back';
+  var WHATSAPP_NUMBER = (CFG.whatsappNumber || '37127034348').replace(/[^0-9]/g, '');
 
   var STORE = 'https://superagent-5681298a.base44.app/functions/evermodChatStore';
   var GREETING = 'Hi! I am Orion from EVERMOD \u{1F3E0} \u2014 your AI assistant.\n\nWe have been building modular homes for 23 years with 2000+ projects delivered. Ask me anything about our houses, or tell me what you are looking for!';
@@ -172,7 +173,9 @@
     if (MEETING_LINK) { window.open(MEETING_LINK, '_blank'); }
     else { send('I would like to book a video call with a specialist'); }
   });
-  panel.querySelector('#evm-a-call').addEventListener('click', function () { send(CALLBACK_TEXT); });
+  panel.querySelector('#evm-a-call').addEventListener('click', function () {
+    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(CALLBACK_TEXT), '_blank');
+  });
 
   /* ---------- init: show greeting instantly (fixed window is always visible) ---------- */
   window.EvermodChat.greet();
