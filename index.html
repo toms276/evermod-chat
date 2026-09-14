@@ -70,7 +70,7 @@
     <button class="card" id="evm-card-chat">
       <span class="num">1</span>
       <h3>Get an Immediate Answer</h3>
-      <p>Chat with Orion, our AI assistant, right here — instant answers about models, prices &amp; delivery, then continue on WhatsApp anytime.</p>
+      <p>Chat with Orion, our AI assistant, right here — instant answers about models, floor plans, delivery and warranties.</p>
       <span class="go">Chat with Orion
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
       </span>
@@ -137,19 +137,12 @@
   function el(tag, cls, text) { var d = document.createElement(tag); if (cls) d.className = cls; if (text !== undefined) d.textContent = text; return d; }
   function scroll() { box.scrollTop = box.scrollHeight; }
   function addMsg(text, who) { box.appendChild(el('div', 'evm-msg ' + who, text)); scroll(); }
-  function addCta() {
-    var a = document.createElement('a');
-    a.className = 'evm-cta'; a.href = EVM_WHATSAPP; a.target = '_blank'; a.rel = 'noopener';
-    a.innerHTML = '<svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.7 6L4 29l8.2-1.7c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg> Continue on WhatsApp \u2192';
-    box.appendChild(a); scroll();
-  }
   function addTyping() { var t = el('div', 'evm-typing'); t.innerHTML = '<span></span><span></span><span></span>'; box.appendChild(t); scroll(); return t; }
 
   function greet() {
     if (opened) return;
     opened = true;
     addMsg(GREETING, 'ai');
-    addCta();
   }
 
   function toggle() {
@@ -185,7 +178,6 @@
       if (typing.parentNode) box.removeChild(typing);
       setBusy(false);
       if (msg) addMsg(msg, 'ai');
-      addCta();
       input.focus();
     }
 
