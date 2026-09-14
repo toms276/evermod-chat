@@ -50,7 +50,10 @@
     '#evm-foot{font-size:10px;font-weight:300;text-align:center;color:#aaa;padding:6px;background:#fff}',
     '#evm-foot a{color:#888;text-decoration:none;font-weight:400}',
     '@keyframes evm-blink{0%,100%{opacity:.2}50%{opacity:1}}',
-    '@media (max-width:480px){#evm-panel{right:8px;left:8px;width:auto;bottom:8px;height:70vh}}'
+    '@media (max-width:768px){#evm-panel{left:8px;right:8px;bottom:8px;width:auto;max-width:none;height:62vh;max-height:none;border-radius:12px}}',
+    '@media (max-width:768px){#evm-acts{gap:6px;padding:8px 10px}}',
+    '@media (max-width:768px){.evm-act{min-width:0;font-size:11px;padding:7px 8px;white-space:normal}}',
+    '@media (max-height:520px){#evm-panel{height:calc(100vh - 16px);bottom:8px}}'
   ].join('');
   document.head.appendChild(css);
 
@@ -149,7 +152,8 @@
       if (window.innerWidth > 480) input.focus();
       scroll();
     },
-    focus: function () { input.focus(); }
+    focus: function () { input.focus(); },
+    open: function () { window.EvermodChat.greet(); }
   };
 
   /* ---------- events ---------- */
