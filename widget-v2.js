@@ -106,12 +106,27 @@
     } else if (!on && t) { t.remove(); }
   }
 
+  var pendingId = null; // record awaiting an answer
+
+  function stripMarker(t) {
+    return (t || '').replace(/\[Website chat id=[^\]]*\]/g, '').trim();
+  }
+
   function enqueue(question) {
     typing(true);
     sendBtn.disabled = true;
     fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'enqueue', sessionId: sessionId, question: question }) })
-      .then(function () { poll(); })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.recordId) {
+          pendingId = d.recordId;
+          try { localStorage.setItem('evm-last-record', pendingId); } catch (e) {}
+          poll();
+        } else {
+          throw new Error('no record');
+        }
+      })
       .catch(function () {
         typing(false);
         sendBtn.disabled = false;
@@ -121,24 +136,34 @@
 
   function poll() {
     if (polling) return;
+    if (!pendingId) { typing(false); sendBtn.disabled = false; return; }
     polling = true;
     fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'poll', sessionId: sessionId }) })
+      body: JSON.stringify({ action: 'poll', recordId: pendingId }) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         polling = false;
-        if (d && d.reply && d.recordId && d.recordId !== lastShownId) {
-          lastShownId = d.recordId;
-          try { localStorage.setItem('evm-last-shown', lastShownId); } catch (e) {}
-          typing(false);
-          sendBtn.disabled = false;
-          addMsg(d.reply, 'ai');
-          poll(); // check for more answered records behind this one
-        } else if (d && d.status === 'answered') {
-          typing(false);
-          sendBtn.disabled = false;
-        } else {
+        if (d && d.status === 'answered' && d.reply) {
+          if (d.recordId !== lastShownId) {
+            lastShownId = d.recordId;
+            try { localStorage.setItem('evm-last-shown', lastShownId); } catch (e) {}
+            pendingId = null;
+            typing(false);
+            sendBtn.disabled = false;
+            addMsg(stripMarker(d.reply), 'ai');
+          } else {
+            typing(false);
+            sendBtn.disabled = false;
+            pendingId = null;
+          }
+        } else if (d && (d.status === 'pending' || d.status === 'in_flight')) {
+          typing(true);
+          sendBtn.disabled = true;
           setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 4000);
+        } else {
+          typing(false);
+          sendBtn.disabled = false;
+          pendingId = null;
         }
       })
       .catch(function () { polling = false; setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 5000); });
@@ -182,21 +207,10 @@
 
   // catch-up: if the visitor reloaded while an answer was on its way, deliver it now
   try { lastShownId = localStorage.getItem('evm-last-shown') || null; } catch (e) { lastShownId = null; }
-  fetch(STORE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'poll', sessionId: sessionId }) })
-    .then(function (r) { return r.json(); })
-    .then(function (d) {
-      if (d && d.reply && d.recordId && d.recordId !== lastShownId) {
-        lastShownId = d.recordId;
-        try { localStorage.setItem('evm-last-shown', lastShownId); } catch (e) {}
-        addMsg(d.reply, 'ai');
-        poll();
-      } else if (d && d.status && d.status !== 'answered' && d.recordId && d.recordId !== lastShownId) {
-        // question still being answered — resume waiting where we left off
-        typing(true);
-        sendBtn.disabled = true;
-        setTimeout(function () { if (panel.querySelector('.evm-typing')) poll(); }, 4000);
-      }
-    })
-    .catch(function () {});
+  var lastRecord = null;
+  try { lastRecord = localStorage.getItem('evm-last-record'); } catch (e) {}
+  if (lastRecord && lastRecord !== lastShownId) {
+    pendingId = lastRecord;
+    poll();
+  }
 })();
