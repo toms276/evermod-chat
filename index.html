@@ -1,88 +1,336 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EVERMOD — Thank You</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inquiry Received — Thank You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;500;600;700&display=swap">
 <style>
-body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#f5f4f2; color:#1a1a1a; }
-.hero { background:#141414; color:#fff; padding:70px 40px; text-align:center; }
-.hero h1 { font-size:42px; font-weight:700; letter-spacing:.04em; margin:0 0 10px; }
-.hero p { font-weight:300; opacity:.75; margin:0; letter-spacing:.05em; }
-.section { max-width:900px; margin:50px auto 0; padding:0 24px; }
-.section h2 { font-size:26px; font-weight:700; margin:0; }
-.section .sub { font-weight:300; color:#777; margin:6px 0 0; }
-.cards { display:flex; gap:16px; flex-wrap:wrap; margin-top:22px; }
-.card { flex:1; min-width:260px; background:#fff; border:1px solid #e6e4e0; border-radius:12px; padding:26px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; text-align:left; font-family:inherit; }
-.card:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.08); }
-.card .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:#141414; color:#fff; font-weight:700; font-size:14px; margin-bottom:12px; }
-.card h3 { font-weight:700; font-size:17px; margin:0 0 8px; }
-.card p { font-weight:300; line-height:1.55; color:#555; margin:0 0 14px; font-size:14px; }
-.card .go { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:#141414; }
-.card .go svg { width:15px; height:15px; fill:#141414; }
-.card .phone { display:block; margin-top:10px; font-size:13px; color:#888; font-weight:300; }
-.card .phone a { color:#1a1a1a; text-decoration:none; font-weight:400; }
-.chatsec { max-width:900px; margin:44px auto 0; padding:0 24px; }
-.chatsec h2 { font-size:26px; font-weight:700; margin:0; }
-.chatsec .sub { font-weight:300; color:#777; margin:6px 0 18px; }
-.footer { text-align:center; font-weight:300; color:#999; font-size:12px; padding:34px 20px 60px; }
+  :root {
+    --page-bg: #f6efe4;
+    --card-bg: #fff2df;
+    --strip-bg: #f3ebe1;
+    --tan: #dccfc4;
+    --ink: #2a241a;
+    --ink-soft: #6b5f50;
+    --line: #e8ddd4;
+    --green: #4a7c5f;
+    --rust: #c8915a;
+    --coral: #f68989;
+    --btn: #1a1a1a;
+    --btn-ink: #f6efe4;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    padding: 32px 16px 64px;
+    display: flex;
+    justify-content: center;
+  }
+
+  h1, h2, h3, .display {
+    font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 760px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 24px 60px -30px rgba(0,0,0,0.35);
+    padding: 40px;
+  }
+
+  @media (max-width: 520px) {
+    .sheet { padding: 24px 18px; border-radius: 16px; }
+  }
+
+  .kicker {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin: 0 0 6px;
+  }
+
+  .headline {
+    font-weight: 800;
+    font-size: clamp(22px, 4vw, 28px);
+    margin: 0 0 4px;
+  }
+
+  .subline {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+
+  .mail-strip {
+    background: var(--strip-bg);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+  .mail-strip svg { flex: none; margin-top: 2px; color: var(--ink-soft); }
+
+  .section-label {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+  .section-label.next { color: var(--coral); }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .option:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -18px rgba(0,0,0,0.4); }
+
+  .option.green { border-left: 4px solid var(--green); }
+  .option.rust  { border-left: 4px solid var(--rust); }
+  .option.coral { border-left: 4px solid var(--coral); }
+
+  .icon-badge {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .icon-badge.green { background: var(--green); }
+  .icon-badge.rust  { background: var(--rust); }
+  .icon-badge.coral { background: var(--coral); }
+
+  .option-title { font-weight: 700; font-size: 16px; margin: 0 0 2px; }
+  .option-text { font-size: 13.5px; color: var(--ink-soft); margin: 0; }
+
+  /* ---- embedded chat section (Orion) ---- */
+  .chat-label { color: var(--green); margin-top: 6px; }
+  .chat-sub {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  #evermod-chat { width: 100%; }
+
+  .lead-in {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin: 26px 0 28px;
+  }
+
+  .quote {
+    background: var(--tan);
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: inset 4px 0 0 var(--coral);
+    margin-bottom: 32px;
+  }
+  .quote p { margin: 0 0 10px; font-size: 15.5px; line-height: 1.55; }
+  .quote p:last-child { margin: 0; font-weight: 700; font-size: 14px; }
+
+  .discover-eyebrow {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+  }
+  .discover-heading { font-size: clamp(19px, 3.4vw, 23px); font-weight: 800; margin: 0 0 8px; }
+  .discover-sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 20px; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 620px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--tan);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .card.photo {
+    background-image:
+      linear-gradient(180deg, rgba(40,50,45,0.15), rgba(40,50,45,0.65)),
+      url("https://new.evermod.eu/wp-content/uploads/2026/03/BARN-MAX-VIEW-3.png");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+  }
+  .card-title {
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 15.5px;
+    margin: 0 0 8px;
+  }
+  .card.photo .card-title {
+    display: inline-block;
+    background: rgba(40,50,55,0.6);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .card-body { font-size: 13px; line-height: 1.5; margin: 0 0 14px; flex: 1; }
+  .card.photo .card-body { color: rgba(255,255,255,0.92); }
+
+  .card-btn {
+    align-self: flex-start;
+    background: var(--btn);
+    color: var(--btn-ink);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .card-note {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .card.photo .card-note { color: rgba(255,255,255,0.8); }
 </style>
-</head><body>
+</head>
+<body>
+  <div class="sheet">
+    <p class="kicker display">THANK YOU!</p>
+    <h1 class="headline">+ Inquiry Received</h1>
+    <p class="subline">We will get in touch with you soon.</p>
 
-<div class="hero">
-  <h1>THANK YOU!</h1>
-  <p>YOUR INQUIRY HAS BEEN RECEIVED</p>
-</div>
+    <div class="mail-strip">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
+      <span>Please check your mail box — there is something special from us to you (check spam if you haven't seen it yet).</span>
+    </div>
 
-<div class="section">
-  <h2>What's next?</h2>
-  <p class="sub">Choose how you'd like to continue — or just scroll down and write to Orion in the chat below.</p>
-  <div class="cards">
-    <button class="card" onclick="EvermodChat.scrollTo()">
-      <span class="num">1</span>
-      <h3>Get an Immediate Answer</h3>
-      <p>Chat with Orion, our AI assistant, right here — instant answers about models, floor plans, delivery and warranties.</p>
-      <span class="go">Chat with Orion
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-      </span>
-    </button>
-    <button class="card" id="evm-card-video">
-      <span class="num">2</span>
-      <h3>Book a Video Call</h3>
-      <p>Walk through the designs together with a specialist. Pick a time that suits you.</p>
-      <span class="go">Book a video call
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-      </span>
-    </button>
-    <button class="card" onclick="EvermodChat.ask(EVERMOD_CHAT_CONFIG.callbackText)">
-      <span class="num">3</span>
-      <h3>Request a Call Back</h3>
-      <p>Leave the details in the chat and our specialist will call you back at a time that suits you.</p>
-      <span class="go">Request a call back
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-      </span>
-      <span class="phone">Or call us directly: <a href="tel:+37127034348">+371 27034348</a></span>
-    </button>
+    <p class="section-label next">+ What's Next?</p>
+    <div class="options">
+      <button class="option green" type="button" onclick="EvermodChat.scrollTo()">
+        <div class="icon-badge green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <p class="option-title">Get Immediate Response</p>
+          <p class="option-text">Chat with Orion — instant answers about pricing, availability &amp; floor plans</p>
+        </div>
+      </button>
+      <button class="option rust" type="button" id="evm-opt-video">
+        <div class="icon-badge rust">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m23 7-7 5 7 5V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <div>
+          <p class="option-title">Book a Video Call</p>
+          <p class="option-text">Walk through designs with a specialist from Evermod</p>
+        </div>
+      </button>
+      <a class="option coral" href="https://wa.me/37127034348" target="_blank" rel="noopener">
+        <div class="icon-badge coral">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <p class="option-title">Request a Call Back</p>
+          <p class="option-text">We call you back — no waiting on hold</p>
+        </div>
+      </a>
+    </div>
+
+    <p class="section-label chat-label">+ Ask Orion</p>
+    <p class="chat-sub">Our AI assistant is right here in the page — no popups, no buttons to open. Just write your question.</p>
+    <div id="evermod-chat"></div>
+
+    <p class="lead-in">Our unique pre-engineered system delivers your home in just 12 weeks — choose an option above to discover how.</p>
+
+    <div class="quote">
+      <p>"Every detail is thoughtfully considered so you can move in and simply start living — no compromises, no surprises."</p>
+      <p>— The Evermod Design Team</p>
+    </div>
+
+    <p class="discover-eyebrow">+ What Others Discover</p>
+    <h2 class="discover-heading">Most future homeowners ask us about these. We thought you might wonder too.</h2>
+    <p class="discover-sub">Dive into the details that matter most to our clients as they begin their modular home journey.</p>
+
+    <div class="cards">
+      <div class="card photo">
+        <p class="card-title">Explore House Designs</p>
+        <p class="card-body">Browse through our modular home catalog. Customize layouts, view specs, and see guide prices.</p>
+        <a class="card-btn" href="https://new.evermod.eu" target="_blank" rel="noopener">View Designs</a>
+        <p class="card-note">*Find your ideal home model and design</p>
+      </div>
+      <div class="card">
+        <p class="card-title">1-Day Assembly Process</p>
+        <p class="card-body">Witness how precision engineering allows us to assemble a complete structural weather-tight home in a day.</p>
+        <a class="card-btn" href="https://new.evermod.eu" target="_blank" rel="noopener">Watch Video</a>
+        <p class="card-note">*See assembly site time-lapse video</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Frequently Asked Questions</p>
+        <p class="card-body">Get answers on foundation setups, regional utilities hookup, and building permitting.</p>
+        <a class="card-btn" href="https://new.evermod.eu" target="_blank" rel="noopener">Read FAQs</a>
+        <p class="card-note">*Learn foundation &amp; building permits requirements</p>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="chatsec">
-  <h2>Ask Orion</h2>
-  <p class="sub">Our AI assistant is right here — no buttons, no popups. Just write your question.</p>
-  <div id="evermod-chat"></div>
-</div>
-
-<p class="footer">EVERMOD · MODULAR HOMES · 23 YEARS · 2000+ PROJECTS</p>
 
 <script>
 window.EVERMOD_CHAT_CONFIG = {
-  meetingLink: '',
+  meetingLink: 'https://meetings-eu1.hubspot.com/normunds-broks/schedule-google-meets-call-with-normunds-evermod',
   callbackPhone: '+371 27034348',
   callbackText: "Hi! I'd prefer a call back — when would be the best time to reach me?"
 };
 </script>
-<script src="widget.js" defer></script>
+<script src="widget.js?v=3" defer></script>
 <script>
-document.getElementById('evm-card-video').addEventListener('click', function () {
+document.getElementById('evm-opt-video').addEventListener('click', function () {
   if (window.EVERMOD_CHAT_CONFIG.meetingLink) { window.open(window.EVERMOD_CHAT_CONFIG.meetingLink, '_blank'); }
   else { EvermodChat.scrollTo(); EvermodChat.ask('I would like to book a video call with a specialist'); }
 });
 </script>
-</body></html>
+</body>
+</html>
