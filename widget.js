@@ -1,9 +1,10 @@
-/* EVERMOD Chat Widget v2 — fixed window (no popup), 3 quick-action buttons.
+/* EVERMOD Chat Widget v3 — embedded section (no open/close buttons, scrolls with the page, ChatGPT-like).
+   The widget renders INSIDE a container div with id="evermod-chat" if present (falls back to <body>).
    Config comes from WordPress via wp_localize_script (EVERMOD_CHAT_CONFIG):
      meetingLink   — Book a Video Call opens this link in a new tab (fallback: asks Orion)
      callbackPhone — optional direct-dial number shown in the window
-     callbackText  — predefined message sent to Orion on "Request a Call Back"
-   API: EvermodChat.ask('text') · EvermodChat.greet() · EvermodChat.focus() */
+     callbackText  — predefined WhatsApp message for "Request a Call Back"
+   API: EvermodChat.ask('text') · EvermodChat.greet() · EvermodChat.focus() · EvermodChat.scrollTo() */
 (function () {
   'use strict';
   if (window.EvermodChat) return;
@@ -26,7 +27,8 @@
   /* ---------- styles ---------- */
   var css = document.createElement('style');
   css.textContent = [
-    '#evm-panel{position:fixed;right:24px;bottom:24px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:540px;max-height:calc(100vh - 48px);background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif}',
+    '#evermod-chat{width:100%}',
+    '#evm-panel{position:static;width:100%;height:600px;background:#fff;border:1px solid #e6e4e0;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.10);display:flex;flex-direction:column;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif}',
     '#evm-head{background:#1a1a1a;color:#fff;padding:13px 15px;display:flex;align-items:center;gap:10px}',
     '#evm-head .t{font-size:15px;font-weight:700;letter-spacing:.02em}',
     '#evm-head .s{font-size:11px;font-weight:300;opacity:.8;margin-top:2px}',
@@ -51,17 +53,16 @@
     '#evm-foot{font-size:10px;font-weight:300;text-align:center;color:#aaa;padding:6px;background:#fff}',
     '#evm-foot a{color:#888;text-decoration:none;font-weight:400}',
     '@keyframes evm-blink{0%,100%{opacity:.2}50%{opacity:1}}',
-    '@media (max-width:768px){#evm-panel{left:8px;right:8px;bottom:8px;width:auto;max-width:none;height:62vh;max-height:none;border-radius:12px}}',
+    '@media (max-width:768px){#evm-panel{height:520px;border-radius:12px}}',
     '@media (max-width:768px){#evm-acts{gap:6px;padding:8px 10px}}',
-    '@media (max-width:768px){.evm-act{min-width:0;font-size:11px;padding:7px 8px;white-space:normal}}',
-    '@media (max-height:520px){#evm-panel{height:calc(100vh - 16px);bottom:8px}}'
+    '@media (max-width:768px){.evm-act{min-width:0;font-size:11px;padding:7px 8px;white-space:normal}}'
   ].join('');
   document.head.appendChild(css);
 
-  /* ---------- markup ---------- */
+  /* ---------- markup (embedded: rendered inside #evermod-chat when present) ---------- */
   var panel = document.createElement('div');
   panel.id = 'evm-panel';
-  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('role', 'log');
   panel.setAttribute('aria-label', 'EVERMOD chat');
   panel.innerHTML =
     '<div id="evm-head"><span class="dot"></span><div><div class="t">EVERMOD</div><div class="s">Orion \u00b7 online now</div></div></div>' +
@@ -76,25 +77,28 @@
       '<button id="evm-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>' +
     '</div>' +
     '<div id="evm-foot">powered by EVERMOD assistant' + (CALLBACK_PHONE ? ' \u00b7 <a href="tel:' + CALLBACK_PHONE.replace(/\s+/g, '') + '">' + CALLBACK_PHONE + '</a>' : '') + '</div>';
-  document.body.appendChild(panel);
+
+  var host = document.getElementById('evermod-chat') || document.body;
+  host.appendChild(panel);
 
   var msgs = panel.querySelector('#evm-msgs');
   var input = panel.querySelector('#evm-input');
   var sendBtn = panel.querySelector('#evm-send');
-  var polling = false;
   var greeted = false;
   var lastShownId = null;
+  var polling = false;
 
   /* ---------- helpers ---------- */
   function scroll() { msgs.scrollTop = msgs.scrollHeight; }
+
   function addMsg(text, who) {
-    var d = document.createElement('div');
-    d.className = 'evm-msg ' + who;
-    d.textContent = text;
-    msgs.appendChild(d);
+    var div = document.createElement('div');
+    div.className = 'evm-msg ' + who;
+    div.textContent = text;
+    msgs.appendChild(div);
     scroll();
-    return d;
   }
+
   function typing(on) {
     var t = panel.querySelector('.evm-typing');
     if (on && !t) {
@@ -106,11 +110,11 @@
     } else if (!on && t) { t.remove(); }
   }
 
-  var pendingId = null; // record awaiting an answer
-
   function stripMarker(t) {
     return (t || '').replace(/\[Website chat id=[^\]]*\]/g, '').trim();
   }
+
+  var pendingId = null; // record awaiting an answer
 
   function enqueue(question) {
     typing(true);
@@ -182,18 +186,23 @@
     ask: function (text) { send(text); },
     greet: function () {
       if (!greeted && !msgs.children.length) { addMsg(GREETING, 'ai'); greeted = true; }
-      if (window.innerWidth > 480) input.focus();
       scroll();
     },
     focus: function () { input.focus(); },
-    open: function () { window.EvermodChat.greet(); }
+    scrollTo: function () {
+      var el = document.getElementById('evermod-chat') || panel;
+      if (el && el.scrollIntoView) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      window.EvermodChat.greet();
+      setTimeout(function () { input.focus(); }, 400);
+    },
+    open: function () { window.EvermodChat.scrollTo(); }
   };
 
   /* ---------- events ---------- */
   sendBtn.addEventListener('click', function () { send(input.value); });
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(input.value); });
 
-  panel.querySelector('#evm-a-chat').addEventListener('click', function () { window.EvermodChat.greet(); });
+  panel.querySelector('#evm-a-chat').addEventListener('click', function () { window.EvermodChat.greet(); input.focus(); });
   panel.querySelector('#evm-a-video').addEventListener('click', function () {
     if (MEETING_LINK) { window.open(MEETING_LINK, '_blank'); }
     else { send('I would like to book a video call with a specialist'); }
@@ -202,7 +211,7 @@
     window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(CALLBACK_TEXT), '_blank');
   });
 
-  /* ---------- init: show greeting instantly (fixed window is always visible) ---------- */
+  /* ---------- init: greeting shows instantly (chat is a visible page section) ---------- */
   window.EvermodChat.greet();
 
   // catch-up: if the visitor reloaded while an answer was on its way, deliver it now
