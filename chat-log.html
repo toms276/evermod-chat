@@ -37,8 +37,8 @@
 
   <div class="stats">
     <div class="stat"><b>7</b>sesijas</div>
-    <div class="stat"><b>14</b>jautājumi</div>
-    <div class="stat"><b>10</b>atbildēti</div>
+    <div class="stat"><b>15</b>jautājumi</div>
+    <div class="stat"><b>11</b>atbildēti</div>
     <div class="stat"><b>1.6s</b>ātrākā atbilde</div>
   </div>
 
@@ -52,6 +52,11 @@
 
   <div class="session">
     <div class="session">
+    <div class="shead"><span class="sid">web-qe2uqrcz</span><span class="badge" style="background:#188038">Latvia (LV)</span><span class="tag">tests no telefona — apstiprināts</span></div>
+    <div class="msg"><div class="meta"><span>17:45</span><span class="st ok">atbildēts</span></div><div class="q">Palidzi izveleties maju</div><div class="r">Sveiki! Protams, palīdzēšu ar prieku 🏠 Lai ieteiktu īsto variantu, pastāstiet drusku: māja domāta pastāvīgai dzīvošanai vai kā brīvdienu māja…</div></div>
+  </div>
+
+  <div class="session">
     <div class="shead"><span class="sid">web-geotest-v261</span><span class="badge">United States (US)</span><span class="tag">tests — pēc labojuma</span></div>
     <div class="msg"><div class="meta"><span>17:38</span><span class="st ok">atbildēts</span></div><div class="q">What colors does the house come in?</div><div class="r">Good question! The exterior look can be adapted to your taste — exact color options depend on the model and configuration. Our manager can confirm within one business day…</div></div>
   </div>
@@ -82,7 +87,7 @@
     <div class="msg"><div class="meta"><span>10:25–10:27</span><span class="st ok">5 ziņas atbildētas</span></div><div class="q">random question number 2–6 about modular homes</div><div class="r">Rate-limiter testēšana — pēc 5 ziņām minūtē klients saņem aizkaves brīdinājumu.</div></div>
   </div>
 
-  <div class="note"><b>Skaidrojums (atjaunots 17:40):</b> Toma testi latviski rādīja "United States", jo sistēma lasīja nepareizo galveni — platformas starpniekservera IP (Render, ASV), nevis apmeklētāja. Defekts atrasts un izlabots (v2.6.1, 17:40): tagad lasa <b>true-client-ip</b> galveni, ko platforma pati pārraksta ar īsto apmeklētāja IP, un valsti nosaka geo serviss. Vecie ieraksti saglabājušies ar nepareizo US. Nākamais tests no Latvijas ierīces rādīs "Latvia (LV)". Ziņām pirms 16:15 valsts netika glabāta vispār. Atbildes te ir saīsinātas — pilnās versijas glabājas datubāzē.</div>
+  <div class="note"><b>Skaidrojums (atjaunots 17:40):</b> Toma testi latviski rādīja "United States", jo sistēma lasīja nepareizo galveni — platformas starpniekservera IP (Render, ASV), nevis apmeklētāja. Defekts atrasts un izlabots (v2.6.1, 17:40): tagad lasa <b>true-client-ip</b> galveni, ko platforma pati pārraksta ar īsto apmeklētāja IP, un valsti nosaka geo serviss. Vecie ieraksti saglabājušies ar nepareizo US. Tests no Latvijas ierīces (17:45, IP 5.241.129.215): <b>Latvia (LV) — apstiprināts, valsts noteikšana strādā pareizi.</b> Ziņām pirms 16:15 valsts netika glabāta vispār. Atbildes te ir saīsinātas — pilnās versijas glabājas datubāzē.</div>
 </div>
 </body>
 </html>
