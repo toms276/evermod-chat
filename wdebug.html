@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><title>widget debug</title></head>
+<body style="margin:20px;font-family:monospace">
+<div id="evermod-chat"></div>
+<pre id="log">started
+</pre>
+<script>
+var log = document.getElementById('log');
+log.textContent += 'config: ' + JSON.stringify(window.EVERMOD_CHAT_CONFIG || null) + '\n';
+</script>
+<script>
+window.onerror = function (m, s, l, c) {
+  log.textContent += 'JS ERROR: ' + m + ' @ line ' + l + ':' + c + '\n';
+};
+</script>
+<script src="https://toms276.github.io/evermod-chat/widget.js"></script>
+<script>
+log.textContent += 'widget loaded, EvermodChat = ' + (window.EvermodChat ? 'OK' : 'MISSING') + '\n';
+log.textContent += 'panel in DOM: ' + (document.getElementById('evm-panel') ? 'YES' : 'NO') + '\n';
+</script>
+</body></html>
