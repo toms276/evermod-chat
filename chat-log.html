@@ -36,14 +36,14 @@
   <div class="sub">15.09.2026 &middot; EVERMOD mājas lapas čats &middot; laiki pēc Rīgas</div>
 
   <div class="stats">
-    <div class="stat"><b>6</b>sesijas</div>
-    <div class="stat"><b>13</b>jautājumi</div>
-    <div class="stat"><b>9</b>atbildēti</div>
+    <div class="stat"><b>7</b>sesijas</div>
+    <div class="stat"><b>14</b>jautājumi</div>
+    <div class="stat"><b>10</b>atbildēti</div>
     <div class="stat"><b>1.6s</b>ātrākā atbilde</div>
   </div>
 
   <div class="session">
-    <div class="shead"><span class="sid">web-qe2uqrcz</span><span class="badge">United States (US)</span><span class="tag">testi no mājas lapas</span></div>
+    <div class="shead"><span class="sid">web-qe2uqrcz</span><span class="badge">United States (US)</span><span class="tag">testi no mājas lapas</span><span class="tag">US = defekts (labots 17:40)</span></div>
     <div class="msg"><div class="meta"><span>17:23</span><span class="st ok">atbildēts</span></div><div class="q">Sveiki man vaig maju</div><div class="r">Sveiki! Kas jūs šodien atvedis — kāds konkrēts modelis prātā, vai vienkārši pētāt iespējas?</div></div>
     <div class="msg"><div class="meta"><span>17:24</span><span class="st ok">atbildēts</span></div><div class="q">Man vaig maju</div><div class="r">Sveiki! Priecājos, ka domājat par māju 🏠 Lai varētu ieteikt piemērotāko variantu, pastāstiet drusku: cik lielu māju meklējat?</div></div>
     <div class="msg"><div class="meta"><span>17:25</span><span class="st ok">atbildēts</span></div><div class="q">Give me details about cheapest home</div><div class="r">Our most compact and affordable model is the ATTEFALL — 23m² interior… May I ask where you're planning to build?</div></div>
@@ -51,7 +51,12 @@
   </div>
 
   <div class="session">
-    <div class="shead"><span class="sid">web-geotest-v260</span><span class="badge">United States (US)</span><span class="tag">tests — fast lane</span></div>
+    <div class="session">
+    <div class="shead"><span class="sid">web-geotest-v261</span><span class="badge">United States (US)</span><span class="tag">tests — pēc labojuma</span></div>
+    <div class="msg"><div class="meta"><span>17:38</span><span class="st ok">atbildēts</span></div><div class="q">What colors does the house come in?</div><div class="r">Good question! The exterior look can be adapted to your taste — exact color options depend on the model and configuration. Our manager can confirm within one business day…</div></div>
+  </div>
+
+  <div class="shead"><span class="sid">web-geotest-v260</span><span class="badge">United States (US)</span><span class="tag">tests — fast lane</span></div>
     <div class="msg"><div class="meta"><span>16:15</span><span class="st ok">atbildēts 1.6s</span></div><div class="q">What kind of heating does the house use in Portugal?</div><div class="r">Every house comes with electric floor heating — Fenix ECOFILM F thin foil under the floor, 60 W/m²…</div></div>
   </div>
 
@@ -77,7 +82,7 @@
     <div class="msg"><div class="meta"><span>10:25–10:27</span><span class="st ok">5 ziņas atbildētas</span></div><div class="q">random question number 2–6 about modular homes</div><div class="r">Rate-limiter testēšana — pēc 5 ziņām minūtē klients saņem aizkaves brīdinājumu.</div></div>
   </div>
 
-  <div class="note"><b>Skaidrojums:</b> valsts tagad tiek noteikta automātiski (Cloudflare galvene, IP atkāpšanās) kopš v2.6.0 — 16:15. Ziņām pirms tam valsts netika glabāta. Šodien redzamie "United States" ir mani testi no darba vides; īsts apmeklētājs no Nīderlandes rādīs "Netherlands (NL)". Atbildes te ir saīsinātas — pilnās versijas glabājas datubāzē.</div>
+  <div class="note"><b>Skaidrojums (atjaunots 17:40):</b> Toma testi latviski rādīja "United States", jo sistēma lasīja nepareizo galveni — platformas starpniekservera IP (Render, ASV), nevis apmeklētāja. Defekts atrasts un izlabots (v2.6.1, 17:40): tagad lasa <b>true-client-ip</b> galveni, ko platforma pati pārraksta ar īsto apmeklētāja IP, un valsti nosaka geo serviss. Vecie ieraksti saglabājušies ar nepareizo US. Nākamais tests no Latvijas ierīces rādīs "Latvia (LV)". Ziņām pirms 16:15 valsts netika glabāta vispār. Atbildes te ir saīsinātas — pilnās versijas glabājas datubāzē.</div>
 </div>
 </body>
 </html>
