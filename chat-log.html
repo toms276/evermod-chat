@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVERMOD — Webchat žurnāls</title>
+<style>
+  :root { --accent:#1f6feb; --bg:#f7f8fa; --card:#ffffff; --line:#e5e8ee; --txt:#1a2233; --mut:#6b7385; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--txt); padding:16px; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  .sub { color:var(--mut); font-size:13px; margin-bottom:16px; }
+  .stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:12px; color:var(--mut); }
+  .stat b { display:block; font-size:16px; color:var(--txt); }
+  .session { background:var(--card); border:1px solid var(--line); border-radius:10px; margin-bottom:14px; overflow:hidden; }
+  .shead { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .sid { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; font-weight:600; }
+  .badge { font-size:11px; font-weight:600; background:var(--accent); color:#fff; border-radius:20px; padding:3px 10px; }
+  .badge.none { background:var(--mut); }
+  .tag { font-size:11px; color:var(--mut); background:var(--bg); border:1px solid var(--line); border-radius:20px; padding:3px 10px; }
+  .msg { padding:12px 14px; border-bottom:1px solid var(--line); }
+  .msg:last-child { border-bottom:none; }
+  .meta { display:flex; gap:10px; font-size:11px; color:var(--mut); margin-bottom:5px; }
+  .st { font-weight:600; }
+  .st.ok { color:#188038; }
+  .q { font-size:14px; font-weight:600; margin-bottom:4px; }
+  .r { font-size:13px; color:var(--mut); line-height:1.5; }
+  .note { font-size:12px; color:var(--mut); background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Webchat žurnāls</h1>
+  <div class="sub">15.09.2026 &middot; EVERMOD mājas lapas čats &middot; laiki pēc Rīgas</div>
+
+  <div class="stats">
+    <div class="stat"><b>6</b>sesijas</div>
+    <div class="stat"><b>13</b>jautājumi</div>
+    <div class="stat"><b>9</b>atbildēti</div>
+    <div class="stat"><b>1.6s</b>ātrākā atbilde</div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-qe2uqrcz</span><span class="badge">United States (US)</span><span class="tag">testi no mājas lapas</span></div>
+    <div class="msg"><div class="meta"><span>17:23</span><span class="st ok">atbildēts</span></div><div class="q">Sveiki man vaig maju</div><div class="r">Sveiki! Kas jūs šodien atvedis — kāds konkrēts modelis prātā, vai vienkārši pētāt iespējas?</div></div>
+    <div class="msg"><div class="meta"><span>17:24</span><span class="st ok">atbildēts</span></div><div class="q">Man vaig maju</div><div class="r">Sveiki! Priecājos, ka domājat par māju 🏠 Lai varētu ieteikt piemērotāko variantu, pastāstiet drusku: cik lielu māju meklējat?</div></div>
+    <div class="msg"><div class="meta"><span>17:25</span><span class="st ok">atbildēts</span></div><div class="q">Give me details about cheapest home</div><div class="r">Our most compact and affordable model is the ATTEFALL — 23m² interior… May I ask where you're planning to build?</div></div>
+    <div class="msg"><div class="meta"><span>17:27</span><span class="st ok">atbildēts</span></div><div class="q">I want a home</div><div class="r">You've come to the right place — we build modular turn-key homes, delivered fully finished 🏠 Is this for full-time living or a holiday home?</div></div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-geotest-v260</span><span class="badge">United States (US)</span><span class="tag">tests — fast lane</span></div>
+    <div class="msg"><div class="meta"><span>16:15</span><span class="st ok">atbildēts 1.6s</span></div><div class="q">What kind of heating does the house use in Portugal?</div><div class="r">Every house comes with electric floor heating — Fenix ECOFILM F thin foil under the floor, 60 W/m²…</div></div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-geotest-nl2</span><span class="badge none">valsts nav (pirms v2.6.0)</span><span class="tag">tests</span></div>
+    <div class="msg"><div class="meta"><span>16:12</span><span class="st ok">atbildēts</span></div><div class="q">Do you have any model with a big glass wall facing the sea?</div><div class="r">Oh yes — big glass walls are kind of our signature 🏠 The BARN (84m²) has a 6.2m tall glass wall…</div></div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-geotest-nl</span><span class="badge none">valsts nav (pirms v2.6.0)</span><span class="tag">tests</span></div>
+    <div class="msg"><div class="meta"><span>16:12</span><span class="st ok">atbildēts</span></div><div class="q">How much does it cost to deliver the house to Portugal?</div><div class="r">Good question! The price depends on the model, configuration and delivery location, so our manager prepares a personal offer…</div></div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-d68q08c9</span><span class="badge none">valsts nav (pirms v2.6.0)</span><span class="tag">demo apmeklētājs</span></div>
+    <div class="msg"><div class="meta"><span>14:45</span><span class="st ok">atbildēts</span></div><div class="q">Hi, what can I get for 20k eur?</div><div class="r">Hi there! I'm Orion — EVERMOD's AI assistant 🏠 We build modular turn-key houses: 23 years in the business, 2000+ projects…</div></div>
+    <div class="msg"><div class="meta"><span>15:06</span><span class="st ok">atbildēts</span></div><div class="q">Hi!</div><div class="r">Hi! What brings you here today — a specific model in mind, or just exploring what's possible?</div></div>
+    <div class="msg"><div class="meta"><span>15:07</span><span class="st ok">atbildēts</span></div><div class="q">I have about 20k and would like to find a small holiday cottage.</div><div class="r">A small holiday cottage is a lovely goal — ATTEFALL (23m²) and BARN MINI (70m²) tend to fit best…</div></div>
+  </div>
+
+  <div class="session">
+    <div class="shead"><span class="sid">web-rltest</span><span class="badge none">valsts nav (pirms v2.6.0)</span><span class="tag">rate-limit testi</span></div>
+    <div class="msg"><div class="meta"><span>10:25–10:27</span><span class="st ok">5 ziņas atbildētas</span></div><div class="q">random question number 2–6 about modular homes</div><div class="r">Rate-limiter testēšana — pēc 5 ziņām minūtē klients saņem aizkaves brīdinājumu.</div></div>
+  </div>
+
+  <div class="note"><b>Skaidrojums:</b> valsts tagad tiek noteikta automātiski (Cloudflare galvene, IP atkāpšanās) kopš v2.6.0 — 16:15. Ziņām pirms tam valsts netika glabāta. Šodien redzamie "United States" ir mani testi no darba vides; īsts apmeklētājs no Nīderlandes rādīs "Netherlands (NL)". Atbildes te ir saīsinātas — pilnās versijas glabājas datubāzē.</div>
+</div>
+</body>
+</html>
