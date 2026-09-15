@@ -33,11 +33,10 @@
     '#evm-head .t{font-size:15px;font-weight:800;letter-spacing:.04em;font-family:"Archivo",-apple-system,sans-serif}',
     '#evm-head .s{font-size:11px;font-weight:300;opacity:.8;margin-top:2px}',
     '#evm-head .dot{width:8px;height:8px;border-radius:50%;background:#4caf50;flex:none}',
-    '#evm-acts{display:flex;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid #e8ddd4;flex-wrap:wrap}',
-    '.evm-act{flex:1;min-width:100px;border:1px solid #2a241a;background:#fff;color:#2a241a;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s ease;white-space:nowrap;text-align:center}',
-    '.evm-act:hover{background:#2a241a;color:#f6efe4}',
-    '.evm-act.primary{background:#2a241a;color:#f6efe4}',
-    '.evm-act.primary:hover{background:#3d352a}',
+
+
+
+
     '#evm-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#f6efe4}',
     '.evm-msg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:14px;line-height:1.45;white-space:pre-wrap;overflow-wrap:break-word}',
     '.evm-msg.ai{background:#fff;border:1px solid #e8ddd4;color:#2a241a;border-bottom-left-radius:4px;align-self:flex-start}',
@@ -54,8 +53,7 @@
     '#evm-foot a{color:#888;text-decoration:none;font-weight:400}',
     '@keyframes evm-blink{0%,100%{opacity:.2}50%{opacity:1}}',
     '@media (max-width:768px){#evm-panel{height:520px;border-radius:16px}}',
-    '@media (max-width:768px){#evm-acts{gap:6px;padding:8px 10px}}',
-    '@media (max-width:768px){.evm-act{min-width:0;font-size:11px;padding:7px 8px;white-space:normal}}'
+
   ].join('');
   document.head.appendChild(css);
 
@@ -66,11 +64,6 @@
   panel.setAttribute('aria-label', 'EVERMOD chat');
   panel.innerHTML =
     '<div id="evm-head"><span class="dot"></span><div><div class="t">EVERMOD</div><div class="s">Orion \u00b7 online now</div></div></div>' +
-    '<div id="evm-acts">' +
-      '<button class="evm-act primary" id="evm-a-chat">Chat with Orion</button>' +
-      '<button class="evm-act" id="evm-a-video">Book a Video Call</button>' +
-      '<button class="evm-act" id="evm-a-call">Request a Call Back</button>' +
-    '</div>' +
     '<div id="evm-msgs"></div>' +
     '<div id="evm-inrow">' +
       '<input id="evm-input" type="text" placeholder="Write your question..." aria-label="Your question">' +
@@ -201,15 +194,6 @@
   /* ---------- events ---------- */
   sendBtn.addEventListener('click', function () { send(input.value); });
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(input.value); });
-
-  panel.querySelector('#evm-a-chat').addEventListener('click', function () { window.EvermodChat.greet(); input.focus(); });
-  panel.querySelector('#evm-a-video').addEventListener('click', function () {
-    if (MEETING_LINK) { window.open(MEETING_LINK, '_blank'); }
-    else { send('I would like to book a video call with a specialist'); }
-  });
-  panel.querySelector('#evm-a-call').addEventListener('click', function () {
-    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(CALLBACK_TEXT), '_blank');
-  });
 
   /* ---------- init: greeting shows instantly (chat is a visible page section) ---------- */
   window.EvermodChat.greet();
